@@ -5,6 +5,19 @@ JavaScript 异步处理
 * Author : Kainan Hong <<1037714455@qq.com>>
 * Source : https://github.com/hellobugme/Step.js/
 
+## 特点
+
+* 实现并行和串行处理，参数集合传递
+* 使用简单，因为你只有 then() 和 done() 两个方法可以使用
+* 无依赖，适用性强，可与其它类库配合使用
+* 小巧，仅 36 行，可直接拷贝到代码中使用，减少引入
+
+## 简例
+
+* 并行：`Steps(step_1_1, step_1_2, step_1_3)`
+* 串行：`Steps(step_1).then(step_2).then(step_3)`
+* 合用：`Steps(step_1_1, step_1_2, step_1_3).then(step_2).then(step_3_1, step_3_2)`
+
 ## Example 1
 
 ```javascript
