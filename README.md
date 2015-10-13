@@ -25,7 +25,7 @@ JavaScript 异步处理
 
 ## Simple Example
 
-* 并行(Parallel) : `Steps(step1_1, step12, step1_3)`
+* 并行(Parallel) : `Steps(step1_1, step1_2, step1_3)`
 * 串行(Serial) : `Steps(step1).then(step2).then(step3)`
 * 合用(Both) : `Steps(step1_1, step1_2, step1_3).then(step2).then(step3_1, step3_2)`
 
