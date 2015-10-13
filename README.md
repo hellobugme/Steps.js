@@ -15,13 +15,13 @@ JavaScript 异步处理
 ## Methods
 
 * `then(fun1, fun2, ...)`
-└ 添加步骤 (add step)
+ + 添加步骤 (add step)
 * `done(param1, param2, ...)`
-├ 向下个步骤传递参数 (pass params to next step)
-└ 启动下个步骤 (start next step)
-　├ 链尾调用 : 启动步骤 1 (use in end-of-chain : start step 1)
-　└ 步骤函数内调用 : 如果当前步骤完成，启动下个步骤
-　　(use in step function : if current step complete, start next step)
+ + 向下个步骤传递参数 (pass params to next step)
+ + 启动下个步骤 (start next step)  
+　· 链尾调用 : 启动步骤 1 (use in end-of-chain : start step 1)  
+　· 步骤函数内调用 : 如果当前步骤完成，启动下个步骤  
+　　(use in step function : if current step complete, start next step)  
 
 ## Simple Example
 
