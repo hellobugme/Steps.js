@@ -5,18 +5,29 @@ JavaScript 异步处理
 * Author : Kainan Hong <<1037714455@qq.com>>
 * Source : https://github.com/hellobugme/Step.js/
 
-## 特点
+## Feature
 
-* 实现并行和串行处理，参数集合传递
+* 实现并行 (Parallel) 和串行 (Serial) 处理，参数集合传递
 * 使用简单，因为你只有 then() 和 done() 两个方法可以使用
 * 无依赖，适用性强，可与其它类库配合使用
 * 小巧，仅 36 行，可直接拷贝到代码中使用，减少引入
 
-## 简例
+## Methods
 
-* 并行：`Steps(step_1_1, step_1_2, step_1_3)`
-* 串行：`Steps(step_1).then(step_2).then(step_3)`
-* 合用：`Steps(step_1_1, step_1_2, step_1_3).then(step_2).then(step_3_1, step_3_2)`
+* `then(fun1, fun2, ...)`
+└ 添加步骤 (add step)
+* `done(param1, param2, ...)`
+├ 向下个步骤传递参数 (pass params to next step)
+└ 启动下个步骤 (start next step)
+　├ 链尾调用 : 启动步骤 1 (use in end-of-chain : start step 1)
+　└ 步骤函数内调用 : 如果当前步骤完成，启动下个步骤
+　　(use in step function : if current step complete, start next step)
+
+## Simple Example
+
+* 并行(Parallel) : `Steps(step1_1, step12, step1_3)`
+* 串行(Serial) : `Steps(step1).then(step2).then(step3)`
+* 合用(Both) : `Steps(step1_1, step1_2, step1_3).then(step2).then(step3_1, step3_2)`
 
 ## Example 1
 
