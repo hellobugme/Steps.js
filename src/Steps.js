@@ -13,16 +13,15 @@ function Steps(){
 Steps.prototype = {
     constructor : Steps,
     then : function(){
-        var steps = this, fns = [].slice.call(arguments, 0), fn;
+        var steps = this, fns = [].slice.call(arguments, 0);
         for(var i = 0, l = fns.length; i < l; i++){
-            fn = fns[i];
-            fn.index = i;
-            fn.group = fns;
-            fn.done = function(){
+            fns[i].index = i;
+            fns[i].done = function(){
+                delete this.done;
                 this.status = "done";
                 steps.args[this.index] = [].slice.call(arguments, 0);
-                for(var i = 0, l = this.group.length; i < l; i++) if(this.group[i].status !== "done") return;
-                for(var args = [], i = 0, l = steps.args.length; i < l; i++) args = args.concat(steps.args[i]);
+                for(var args = [], i = 0, l = steps.step.length; i < l; i++) if(steps.step[i].status !== "done") return;
+                for(i = 0, l = steps.args.length; i < l; i++) args = args.concat(steps.args[i]);
                 steps.done.apply(steps, args)
             }
         }
@@ -32,7 +31,7 @@ Steps.prototype = {
     done : function(){
         if(this.fns.length === 0) return;
         this.args = [];
-        var fns = this.fns.shift(),
+        var fns = this.step = this.fns.shift(),
             args = [].slice.call(arguments, 0);
         for(var i = 0, l = fns.length; i < l; i++) fns[i].apply(fns[i], args);
     }
