@@ -14,7 +14,7 @@ JavaScript 异步处理
 
 ## Methods
 
-* `then(fun1, fun2, ...)`
+* `then(fun1, fun2, ...)` / `then([fun1, fun2, ...])`
  + 添加步骤 (add step)
 * `done(param1, param2, ...)`
  + 向下个步骤传递参数 (pass params to next step)
