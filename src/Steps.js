@@ -18,9 +18,8 @@ Steps.prototype = {
             fns[i].index = i;
             fns[i].done = function(){
                 delete this.done;
-                this.status = "done";
                 steps.args[this.index] = [].slice.call(arguments, 0);
-                for(var args = [], i = 0, l = steps.step.length; i < l; i++) if(steps.step[i].status !== "done") return;
+                for(var args = [], i = 0, l = steps.step.length; i < l; i++) if(steps.step[i].done) return;
                 for(i = 0, l = steps.args.length; i < l; i++) args = args.concat(steps.args[i]);
                 steps.done.apply(steps, args)
             }
