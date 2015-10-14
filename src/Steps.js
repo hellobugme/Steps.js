@@ -13,7 +13,7 @@ function Steps(){
 Steps.prototype = {
     constructor : Steps,
     then : function(){
-        var steps = this, fns = [].slice.call(arguments, 0);
+        var steps = this, fns = arguments[0].push ? arguments[0] : [].slice.call(arguments, 0);
         for(var i = 0, l = fns.length; i < l; i++){
             fns[i].index = i;
             fns[i].done = function(){
