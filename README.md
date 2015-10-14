@@ -108,3 +108,28 @@ Steps(
     }
 ).done();
 ```
+
+## Example 3
+
+```javascript
+Steps(
+    // 传入数组
+    $.map(["1", "2", "3"], function(fileName){
+        return function(){
+            var _this = this;
+            $.ajax({
+                url: "./resource/" + fileName + ".txt",
+                dataType: "text",
+                success: function(data) {
+                    _this.done(data.replace(/\r\n/g, "<br/>"));
+                }
+            });
+        };
+    })
+).then(
+    function(){
+        var datas = [].slice.call(arguments, 0);
+        $("#content").html(datas.join("<br/><br/>"));
+    }
+).done();
+```
