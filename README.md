@@ -75,36 +75,36 @@ Steps(
         $.ajax({
             // 请求大文件，用于测试返回顺序和 step.2 参数顺序
             // url: 'https://code.jquery.com/jquery-git1.min.js',
-            url: './resource/poem.txt',
+            url: './data.txt',
             dataType: 'text',
-            success: function(data) {
-                // 如果是大文件，虽然是最后输出，但在 step.2 中仍是 poem1
-                console.log(data);
+            success: function(str) {
+                // 如果是大文件，虽然是最后输出，但在 step.2 中仍是 data1
+                console.log(str);
                 // 步骤完成，并保存下个步骤要使用到的数据
-                _this.done(data.replace(/\r\n/g, "<br/>"));
+                _this.done(str.replace(/\r\n/g, "<br/>"));
             }
         });
     },
     function(){
         // step.1.2 : 从 .js 文件中获取数据
         var _this = this;
-        $.getScript('./resource/poem.js', function(){
-            console.log(window.poem);
-            _this.done(window.poem);
+        $.getScript('./data.js', function(){
+            console.log(window.data);
+            _this.done(window.data);
         });
     },
     function(){
         // step.1.3 : 从 .json 文件中获取数据
         var _this = this;
-        $.getJSON('./resource/poem.json', function(data){
-            console.log(data);
-            _this.done(data.poem);
+        $.getJSON('./data.json', function(json){
+            console.log(json);
+            _this.done(json.data);
         });
     }
 ).then(
-    function(poem1, poem2, poem3){
+    function(data1, data2, data3){
         // step.2 : 使用数据
-        $("#content").html(poem1 + "<br/><br/>" + poem2 + "<br/><br/>" + poem3);
+        console.log(data1, data2, data3);
         this.done();
     }
 ).done();
@@ -116,14 +116,14 @@ Demo : http://runjs.cn/code/2arxvtok
 ```javascript
 Steps(
     // 传入数组
-    $.map(["1", "2", "3"], function(fileName){
+    $.map(["./data1.txt", "./data2.txt", "./data3.txt"], function(fileURL){
         return function(){
             var _this = this;
             $.ajax({
-                url: "./resource/" + fileName + ".txt",
+                url: fileURL,
                 dataType: "text",
-                success: function(data) {
-                    _this.done(data.replace(/\r\n/g, "<br/>"));
+                success: function(str) {
+                    _this.done(str.replace(/\r\n/g, "<br/>"));
                 }
             });
         };
@@ -131,7 +131,7 @@ Steps(
 ).then(
     function(){
         var datas = [].slice.call(arguments, 0);
-        $("#content").html(datas.join("<br/><br/>"));
+        console.log(datas);
     }
 ).done();
 ```
