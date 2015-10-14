@@ -36,5 +36,5 @@ Steps.prototype = {
         for(var i = 0, l = fns.length; i < l; i++) fns[i].apply(fns[i], args);
     }
 };
-_.Steps = Steps;
+_.Steps = _.Steps || Steps;
 })(window);
