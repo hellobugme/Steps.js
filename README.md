@@ -3,7 +3,7 @@
 JavaScript 异步处理
 
 * Author : Kainan Hong <<1037714455@qq.com>>
-* Source : https://github.com/hellobugme/Step.js/
+* Source : https://github.com/hellobugme/Steps.js/
 
 ## Feature
 
