@@ -28,11 +28,10 @@ Steps.prototype = {
         return this;
     },
     done : function(){
-        if(this.fns.length === 0) return;
         this.args = [];
         var fns = this.step = this.fns.shift(),
             args = [].slice.call(arguments, 0);
-        for(var i = 0, l = fns.length; i < l; i++) fns[i].apply(fns[i], args);
+        if(fns) for(var i = 0, l = fns.length; i < l; i++) fns[i].apply(fns[i], args);
     }
 };
 _.Steps = _.Steps || Steps;
