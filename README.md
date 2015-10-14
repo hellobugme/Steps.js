@@ -34,7 +34,7 @@ JavaScript 异步处理
 ```javascript
 Steps(
     function(){
-        console.log("step.1   : ", arguments); // "param.start"
+        console.log("step.1   : ", arguments); // ["param.start"]
         this.done("param.1");
     }
 ).then(
@@ -42,18 +42,18 @@ Steps(
         var _this = this, args = arguments;
         // 异步
         setTimeout(function(){
-            console.log("step.2.1 : ", args); // "param.1"
+            console.log("step.2.1 : ", args); // ["param.1"]
             // 保存多个参数
             _this.done("param.2.1.1", "param.2.1.2");
         }, 1000);
     },
     function(){
-        console.log("step.2.2 : ", arguments); // "param.1"
+        console.log("step.2.2 : ", arguments); // ["param.1"]
         // 不保存参数
         this.done();
     },
     function(){
-        console.log("step.2.3 : ", arguments); // "param.1"
+        console.log("step.2.3 : ", arguments); // ["param.1"]
         this.done("param.2.3");
     }
 ).then(
