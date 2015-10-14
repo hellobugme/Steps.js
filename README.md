@@ -63,6 +63,7 @@ Steps(
     }
 ).done("param.start");
 ```
+Demo : http://runjs.cn/code/t3s81k1t
 
 ## Example 2
 
@@ -108,6 +109,7 @@ Steps(
     }
 ).done();
 ```
+Demo : http://runjs.cn/code/2arxvtok
 
 ## Example 3
 
@@ -133,4 +135,4 @@ Steps(
     }
 ).done();
 ```
-demo : http://runjs.cn/code/71p9sez9
+Demo : http://runjs.cn/code/71p9sez9
