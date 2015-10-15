@@ -13,15 +13,15 @@ function Steps(){
 Steps.prototype = {
     constructor : Steps,
     then : function(){
-        var steps = this, fns = arguments[0].push ? arguments[0] : [].slice.call(arguments, 0);
+        var _this = this, fns = arguments[0].push ? arguments[0] : [].slice.call(arguments, 0);
         for(var i = 0, l = fns.length; i < l; i++){
             fns[i].index = i;
             fns[i].done = function(){
                 delete this.done;
-                steps.args[this.index] = [].slice.call(arguments, 0);
-                for(var args = [], i = 0, l = steps.step.length; i < l; i++) if(steps.step[i].done) return;
-                for(i = 0, l = steps.args.length; i < l; i++) args = args.concat(steps.args[i]);
-                steps.done.apply(steps, args)
+                _this.args[this.index] = [].slice.call(arguments, 0);
+                for(var args = [], i = 0, l = _this.step.length; i < l; i++) if(_this.step[i].done) return;
+                for(i = 0, l = _this.args.length; i < l; i++) args = args.concat(_this.args[i]);
+                _this.done.apply(_this, args);
             }
         }
         this.fns.push(fns);
