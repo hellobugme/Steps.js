@@ -6,7 +6,7 @@
 ;(function(_){
 "use strict";
 function Steps(){
-    if(!(this instanceof Steps)) return new Steps(arguments[0].push ? arguments[0] : [].slice.call(arguments, 0));
+    if(!(this instanceof Steps)) return new Steps([].slice.call(arguments, 0));
     this.fns = [];
     arguments.length > 0 && this.then.apply(this, arguments[0].push ? arguments[0] : [].slice.call(arguments, 0));
 }
