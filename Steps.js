@@ -21,8 +21,8 @@ Steps.prototype = {
                 _this.args[this.index] = [].slice.call(arguments, 0);
                 for(var args = [], i = 0, l = _this.step.length; i < l; i++) if(_this.step[i].done) return;
                 for(i = 0, l = _this.args.length; i < l; i++) args = args.concat(_this.args[i]);
-                _this.done.apply(_this, args);
                 _this.args = [];
+                _this.done.apply(_this, args);
             }
         }
         this.fns.push(fns);
