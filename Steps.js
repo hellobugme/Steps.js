@@ -2,6 +2,7 @@
  * 异步处理
  * @author kainanhong
  * @version 2015.10.13
+ * @source https://github.com/hellobugme/Steps.js
  */
 ;(function(_){
 "use strict";
