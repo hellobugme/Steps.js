@@ -24,7 +24,7 @@ Steps.prototype = {
                 for(i = 0, l = _this.args.length; i < l; i++) args = args.concat(_this.args[i]);
                 _this.args = [];
                 _this.done.apply(_this, args);
-            }
+            };
         }
         this.fns.push(fns);
         return this;
