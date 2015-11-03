@@ -137,3 +137,122 @@ Steps(
 ).done();
 ```
 Demo : http://runjs.cn/code/71p9sez9
+
+## Example 4
+
+```javascript
+// 扩展 wait() 方法
+Steps.prototype.wait = function(delay){
+	return this.then(function(){
+		var _this = this, args = [].slice.call(arguments, 0);
+		setTimeout(function(){
+			_this.done.apply(_this, args);
+		}, delay || 0);
+	});
+};
+
+var num = 10, size = 40, blocks = [], ci;
+Steps(
+	function(){
+		// 创建方块
+		var _this = this;
+				body = $("body"),
+				maxW = $(window).width() - size,
+				maxH = $(window).height() - size,
+				steps = Steps().wait(500);
+		for(var i = 0; i < num; i++){
+			steps.then(function(){
+				var _this = this,
+				block = $('<div class="block"></div>').css({
+					position: "absolute",
+					width: size,
+					height: size,
+					backgroundColor : "#" + ("00000" + (Math.random() * 0xFFFFFF << 0).toString(16)).slice(-6),
+					left : Math.random() * maxW
+				}).appendTo(body)
+					.animate({ top : maxH }, 1000, "easeOutBounce");
+				setTimeout(function(){ _this.done(); }, 100);
+				blocks.push(block);
+			});
+		}
+		steps.then(function(){ 
+			this.done();
+			_this.done();
+		}).done();
+	}
+).wait(1000).then(
+	function(){
+		// 在左侧排成一列
+		var _this = this;
+				steps = Steps();
+		for(var i = 0; i < num; i++){
+			steps.then(function(i){
+				var _this = this;
+				blocks[i].animate({ top : (maxH - size * num) / 2 + i * size, left : 0 }, 100, null, function(){
+					_this.done(++i);
+				});
+			});
+		}
+		steps.then(function(){
+			this.done();
+			_this.done();
+		}).done(0);
+	}
+).wait(500).then(
+	function(){
+		// 在中间排成一行
+		var _this = this,
+				steps = Steps(), 
+				i = 0;
+		steps.then(
+			$.map(blocks, function(){
+				return function(){
+					var _this = this,
+							top = (maxH - size) / 2,
+							left = (maxW - size / 2 * num) / 2 + i * size / 2;
+					blocks[i++].animate({ top : top, left : left }, 500, function(){
+						_this.done();
+					});
+				};
+			})
+		);
+		steps.then(function(){
+			this.done();
+			_this.done();
+		}).done();
+	}
+).wait(100).then(
+	function(){
+		// 蠕动
+		var _this = this,
+				steps = Steps(),
+				i = 0,
+				isOpen = false;
+		function addNextSteps(){
+			steps.then($.map(blocks, function(){
+				return function(){
+					var _this = this, left;
+					if(isOpen) left = (maxW - size / 2 * num) / 2 + i * size / 2;
+					else left = (maxW - size / 3 * 2 * num) / 2 + i * size / 3 * 2;
+					blocks[i++].animate({ left : left }, 500, function(){
+						_this.done();
+					});
+				};
+			})).then(function(){
+				i = 0;
+				isOpen = !isOpen;
+				addNextSteps();
+				this.done();
+			});
+		}
+		addNextSteps();
+		steps.done();
+	}
+).then(
+	function(){
+		alert("all done");
+		this.done();
+	}
+).done();
+```
+Demo : http://runjs.cn/code/djqb7whf
