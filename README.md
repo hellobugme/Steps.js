@@ -228,7 +228,7 @@ Steps(
 			steps = Steps(),
 			i = 0,
 			isOpened = false;
-		function addNextSteps(){
+		(function addNextSteps(){
 			steps.then($.map(blocks, function(){
 				return function(){
 					var _this = this, left;
@@ -244,8 +244,7 @@ Steps(
 				addNextSteps();
 				this.done();
 			});
-		}
-		addNextSteps();
+		})()
 		steps.done();
 	}
 ).then(
