@@ -156,10 +156,10 @@ Steps(
 	function(){
 		// 创建方块
 		var _this = this;
-				body = $("body"),
-				maxW = $(window).width() - size,
-				maxH = $(window).height() - size,
-				steps = Steps().wait(500);
+			body = $("body"),
+			maxW = $(window).width() - size,
+			maxH = $(window).height() - size,
+			steps = Steps().wait(500);
 		for(var i = 0; i < num; i++){
 			steps.then(function(){
 				var _this = this,
@@ -227,12 +227,12 @@ Steps(
 		var _this = this,
 			steps = Steps(),
 			i = 0,
-			isOpen = false;
+			isOpened = false;
 		function addNextSteps(){
 			steps.then($.map(blocks, function(){
 				return function(){
 					var _this = this, left;
-					if(isOpen) left = (maxW - size / 2 * num) / 2 + i * size / 2;
+					if(isOpened) left = (maxW - size / 2 * num) / 2 + i * size / 2;
 					else left = (maxW - size / 3 * 2 * num) / 2 + i * size / 3 * 2;
 					blocks[i++].animate({ left : left }, 500, function(){
 						_this.done();
@@ -240,7 +240,7 @@ Steps(
 				};
 			})).then(function(){
 				i = 0;
-				isOpen = !isOpen;
+				isOpened = !isOpened;
 				addNextSteps();
 				this.done();
 			});
