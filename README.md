@@ -184,7 +184,7 @@ Steps(
 	function(){
 		// 在左侧排成一列
 		var _this = this;
-				steps = Steps();
+			steps = Steps();
 		for(var i = 0; i < num; i++){
 			steps.then(function(i){
 				var _this = this;
@@ -202,14 +202,14 @@ Steps(
 	function(){
 		// 在中间排成一行
 		var _this = this,
-				steps = Steps(), 
-				i = 0;
+			steps = Steps(), 
+			i = 0;
 		steps.then(
 			$.map(blocks, function(){
 				return function(){
 					var _this = this,
-							top = (maxH - size) / 2,
-							left = (maxW - size / 2 * num) / 2 + i * size / 2;
+						top = (maxH - size) / 2,
+						left = (maxW - size / 2 * num) / 2 + i * size / 2;
 					blocks[i++].animate({ top : top, left : left }, 500, function(){
 						_this.done();
 					});
@@ -225,9 +225,9 @@ Steps(
 	function(){
 		// 蠕动
 		var _this = this,
-				steps = Steps(),
-				i = 0,
-				isOpen = false;
+			steps = Steps(),
+			i = 0,
+			isOpen = false;
 		function addNextSteps(){
 			steps.then($.map(blocks, function(){
 				return function(){
