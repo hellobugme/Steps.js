@@ -15,7 +15,6 @@ Steps.prototype = {
     constructor : Steps,
     then : function(){
         var _this = this, fns = arguments[0].push ? arguments[0] : [].slice.call(arguments, 0);
-        if(fns.length === 0) return this;
         for(var i = 0, l = fns.length; i < l; i++){
             fns[i].index = i;
             fns[i].done = function(){
@@ -27,7 +26,7 @@ Steps.prototype = {
                 _this.done.apply(_this, args);
             };
         }
-        this.fns.push(fns);
+        if(fns.length > 0) this.fns.push(fns);
         return this;
     },
     done : function(){
