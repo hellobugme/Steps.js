@@ -244,7 +244,7 @@ Steps(
 				addNextSteps();
 				this.done();
 			});
-		})()
+		})();
 		steps.done();
 	}
 ).then(
