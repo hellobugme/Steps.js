@@ -151,7 +151,7 @@ Steps.prototype.wait = function(delay){
 	});
 };
 
-var num = 10, size = 40, blocks = [], ci;
+var num = 10, size = 40, blocks = [];
 Steps(
 	function(){
 		// 创建方块
