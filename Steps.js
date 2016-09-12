@@ -37,7 +37,7 @@ Steps.prototype = {
                 fn.error = function(){
                     if(instance.isError) return;
                     instance.isError = true;
-                    instance.errorFn.apply(instance.errorFn, [].slice.call(arguments, 0));
+                    if(instance.errorFn) instance.errorFn.apply(instance.errorFn, [].slice.call(arguments, 0));
                 };
             }
             step.count = count;
