@@ -7,28 +7,37 @@ JavaScript 异步处理
 
 ## Feature
 
-* 实现并行 (Parallel) 和串行 (Serial) 处理，参数集合传递
+* 并行与串行
+* 参数集合传递
 * 链式调用
-* 使用简单，因为你只有 then() 和 done() 两个方法可以使用
-* 无依赖，适用性强，可与其它类库配合使用
-* 小巧，仅 32 行，可直接拷贝到代码中使用，减少引入
+* 无依赖
 
 ## Methods
 
-* `then(fun1, fun2, ...)` / `then([fun1, fun2, ...])`
- + 添加步骤 (add step)
-* `done(param1, param2, ...)`
- + 向下个步骤传递参数 (pass params to next step)
- + 启动下个步骤 (start next step)  
-　· 链尾调用 : 启动步骤 1 (use in end-of-chain : start step 1)  
-　· 步骤函数内调用 : 如果当前步骤完成，启动下个步骤  
-　　(use in step function : if current step complete, start next step)  
+* `steps.then(...stepFns)` / `steps.then([stepFn1, stepFn2, ...])`
+ + 添加步骤
+* `steps.done(...params)`
+ + 启动步骤
+ + 向步骤1传递参数
+* `steps.error(errFn)`
+ + 设置出错时触发事件
+* `steps.getTimeLog(timeLogFn)`
+ + 所有步骤完成后，可获取到各个步骤函数的耗时
+
+---
+
+* `stepFn.done(...params)`
+ + 如果当前步骤完成，启动下个步骤
+ + 向下个步骤传递参数
+* `stepFn.error(...params)`
+ + 步骤函数调用 : 终止所有步骤，并触发链上的错误事件
 
 ## Simple Example
 
-* 并行(Parallel) : `Steps(step1_1, step1_2, step1_3)`
-* 串行(Serial) : `Steps(step1).then(step2).then(step3)`
-* 合用(Both) : `Steps(step1_1, step1_2, step1_3).then(step2).then(step3_1, step3_2)`
+* 并行 : `Steps(stepFn1, stepFn2, stepFn3).done()`
+* 串行 : `Steps(step1).then(step2).then(step3).dnoe()`
+* 错误 : `Steps(step1).then(step2).error(errorFn).done()`
+* 耗时 : `Steps(stepFn1, stepFn2).then(step2).getTimeLog(timeLogFn).dnoe()`
 
 ## Example 1
 
@@ -56,11 +65,20 @@ Steps(
     function(){
         console.log("step.2.3 : ", arguments); // ["param.1"]
         this.done("param.2.3");
+        // this.error("step2 fn3 is error");
     }
 ).then(
     function(){
         console.log("step.3   : ", arguments); // ["param.2.1.1", "param.2.1.2", "param.2.3"]
         this.done();
+    }
+).error(
+    function(){
+        console.log(arguments); // ["step2 fn3 is error"]
+    }
+).getTimeLog(
+    function(timeLog){
+        console.log(JSON.stringify(timeLog)); // [[9], [1002, 1, 1], [1]]
     }
 ).done("param.start");
 ```
