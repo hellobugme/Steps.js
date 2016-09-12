@@ -18,14 +18,11 @@ JavaScript 异步处理
  + 添加步骤
 * `steps.done(...params)`
  + 启动步骤
- + 向步骤1传递参数
+ + 向首个步骤传递参数
 * `steps.error(errFn)`
  + 设置出错时触发事件
 * `steps.getTimeLog(timeLogFn)`
  + 所有步骤完成后，可获取到各个步骤函数的耗时
-
----
-
 * `stepFn.done(...params)`
  + 如果当前步骤完成，启动下个步骤
  + 向下个步骤传递参数
