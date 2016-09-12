@@ -1,38 +1,72 @@
 /**
  * 异步处理
  * @author kainanhong
- * @version 2015.10.13
+ * @version 2016.9.12
  * @source https://github.com/hellobugme/Steps.js
  */
-;(function(_){
+;(function(){
 "use strict";
-function Steps(){
+function Steps(fns){
     if(!(this instanceof Steps)) return new Steps([].slice.call(arguments, 0));
-    this.fns = [], this.args = [];
-    arguments.length > 0 && this.then.apply(this, arguments[0].push ? arguments[0] : [].slice.call(arguments, 0));
+    this.steps = [];
+    this.args = [];
+    this.timeLog = [];
+    if(arguments.length > 0) this.then.apply(this, fns.push ? fns : [].slice.call(arguments, 0));
 }
 Steps.prototype = {
     constructor : Steps,
-    then : function(){
-        var _this = this, fns = arguments.length > 0 && arguments[0].push ? arguments[0] : [].slice.call(arguments, 0);
-        for(var i = 0, l = fns.length; i < l; i++){
-            fns[i].index = i;
-            fns[i].done = function(){
-                delete this.done;
-                _this.args[this.index] = [].slice.call(arguments, 0);
-                for(var args = [], i = 0, l = _this.step.length; i < l; i++) if(_this.step[i].done) return;
-                for(i = 0, l = _this.args.length; i < l; i++) args = args.concat(_this.args[i]);
-                _this.args = [];
-                _this.done.apply(_this, args);
-            };
+    then: function(fns){
+        var instance = this;
+        var step = arguments.length > 0 && fns.push ? fns : [].slice.call(arguments, 0);
+        var count = step.length;
+        if(count > 0){
+            step.index = instance.steps.length;
+            for(var i = 0; i < count; i++){
+                var fn = step[i];
+                fn.stepIndex = step.index;
+                fn.fnIndex = i;
+                fn.done = function(){
+                    if(instance.isError) return;
+                    instance.timeLog[this.stepIndex][this.fnIndex] = +Date.now() - instance.timeLog[this.stepIndex][this.fnIndex];
+                    instance.args[this.fnIndex] = [].slice.call(arguments, 0);
+                    if(--instance.step.count > 0) return;
+                    for(var args = [], i = 0, l = instance.args.length; i < l; i++) args = args.concat(instance.args[i]);
+                    instance.args = [];
+                    instance.done.apply(instance, args);
+                };
+                fn.error = function(){
+                    if(instance.isError) return;
+                    instance.isError = true;
+                    instance.errorFn.apply(instance.errorFn, [].slice.call(arguments, 0));
+                };
+            }
+            step.count = count;
+            this.timeLog.push([]);
+            this.steps.push(step);
         }
-        if(fns.length > 0) this.fns.push(fns);
         return this;
     },
-    done : function(){
-        var fns = this.step = this.fns.shift(), args = [].slice.call(arguments, 0);
-        if(fns) for(var i = 0, l = fns.length; i < l; i++) fns[i].apply(fns[i], args);
+    done: function(){
+        var args = [].slice.call(arguments, 0);
+        this.step = this.steps[this.step ? (this.step.index + 1) : 0];
+        if(this.step){
+            for(var i = 0, count = this.step.length; i < count; i++){
+                var fn = this.step[i];
+                this.timeLog[fn.stepIndex][fn.fnIndex] = +Date.now();
+                fn.apply(fn, args);
+            }
+        }else{
+            if(this.timeLogFn) this.timeLogFn(this.timeLog);
+        }
+    },
+    error: function(fn){
+        this.errorFn = fn;
+        return this;
+    },
+    getTimeLog: function(fn){
+        this.timeLogFn = fn;
+        return this;
     }
 };
-_.Steps = _.Steps || Steps;
-})(window);
+if(window) window.Steps = Steps;
+})();
