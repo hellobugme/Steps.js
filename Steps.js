@@ -38,7 +38,6 @@ Steps.prototype = {
                     if(instance.isError) return;
                     instance.isError = true;
                     if(instance.errorFn) instance.errorFn.apply(instance.errorFn, [].slice.call(arguments, 0));
-                    instance.dispose();
                 };
             }
             step.count = count;
@@ -56,6 +55,7 @@ Steps.prototype = {
                 this.timeLog[fn.stepIndex][fn.fnIndex] = +Date.now();
                 fn.apply(fn, args);
             }
+            if(this.isError) this.dispose();
         }else{
             if(this.timeLogFn) this.timeLogFn(this.timeLog);
             this.dispose();
