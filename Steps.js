@@ -38,6 +38,7 @@ Steps.prototype = {
                     if(instance.isError) return;
                     instance.isError = true;
                     if(instance.errorFn) instance.errorFn.apply(instance.errorFn, [].slice.call(arguments, 0));
+                    instance.dispose();
                 };
             }
             step.count = count;
@@ -57,7 +58,9 @@ Steps.prototype = {
             }
         }else{
             if(this.timeLogFn) this.timeLogFn(this.timeLog);
+            this.dispose();
         }
+        return this;
     },
     error: function(fn){
         this.errorFn = fn;
@@ -66,6 +69,9 @@ Steps.prototype = {
     getTimeLog: function(fn){
         this.timeLogFn = fn;
         return this;
+    },
+    dispose: function(){
+        this.steps = this.step = this.args = this.timeLog = this.errorFn = this.timeLogFn = null;
     }
 };
 if(window) window.Steps = Steps;
